@@ -1,4 +1,5 @@
 let disks = document.querySelectorAll(".disk");
+var stacks = document.querySelectorAll(".stack");
 
 disks.forEach((disk) => {
   disk.addEventListener("dragstart", () => {
@@ -10,47 +11,39 @@ disks.forEach((disk) => {
   });
 });
 
-let stacks = document.querySelectorAll(".stack");
-
 stacks.forEach((stack) => {
-  let prepend = false;
-  stack.addEventListener("dragover", (e) => {
+  stack.addEventListener("dragenter", (e) => {
+    stacks = document.querySelectorAll(".stack");
     e.preventDefault();
     const drag = document.querySelector(".dragging");
-    let diskstack = stack.querySelectorAll(".disk");
-    let lastDisk = diskstack[1];
-    if (typeof lastDisk != "undefined") {
-      console.log("SUCESS getting lastdisk on stack ");
-      let lastDiskOnStackNumber = Number(
-        lastDisk.className.split(" ")[1].charAt(1)
+    let diskstack = stack.querySelectorAll(".disk:not(.dragging)");
+    console.log(diskstack);
+    if (diskstack.length == 0) {
+      stack.prepend(drag);
+    } else {
+      let lastDiskNumber = Number(
+        diskstack[0].className.split(" ")[1].charAt(1)
       );
-      console.log(`Last disk on stack number == ${lastDiskOnStackNumber}`);
-      let dragDiskNumber = drag.className.split(" ")[1].charAt(1);
-      console.log(`disk being dragged numbebr == ${dragDiskNumber}`);
+      let dragNumber = Number(drag.className.split(" ")[1].charAt(1));
 
-      if (dragDiskNumber < lastDiskOnStackNumber) {
-        console.log("is safe to prepend here");
-        prepend = true;
+      if (dragNumber < lastDiskNumber) {
         stack.prepend(drag);
       } else {
-        console.log("you can't to prepend here");
-        let bf = document.querySelector(".header");
-        console.log(bf);
-        bf.appendChild(drag);
-        prepend = false;
       }
-    } else {
-      console.log(
-        `lasdisk on stack UNDEFINED, probably the stack is empty, so you can prepend here :)`
-      );
-      prepend = true;
-      stack.prepend(drag);
     }
+  });
+});
 
-    console.log(`prepend value ${prepend}`);
-    if (prepend) {
-    } else {
-      console.log("Read the rules please");
+let stackContainers = document.querySelectorAll(".container-stack");
+
+stackContainers.forEach((stackContainer) => {
+  stackContainer.addEventListener("mouseenter", () => {
+    let stackingDisks = stackContainer.querySelectorAll(".disk");
+    if (stackingDisks.length >= 1) {
+      stackingDisks.forEach((stackingDisk) => {
+        stackingDisk.setAttribute("draggable", false);
+      });
+      stackingDisks[0].setAttribute("draggable", true);
     }
   });
 });
