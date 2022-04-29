@@ -43,6 +43,8 @@ img {
   flex-direction: column;
   width: 90%;
   margin: auto;
+  margin-top: 10px;
+  padding-bottom: 10px;
   background-color: #006970;
   align-items: center;
 }
@@ -88,7 +90,7 @@ img {
   justify-content: center;
   align-items: flex-end;
   margin: 0 5px;
-  height: 430px;
+  height: 420px;
   width: 31%;
   background-color: #004241;
 }
